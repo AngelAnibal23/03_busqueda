@@ -24,27 +24,29 @@ void mostrarPolinomio(int n, Polinomio a[]){
 	cout<<endl; 
 }
 
-int busquedaSec(int n, Polinomio a[], int coef, int exp) {
+int busquedaSecuencial(int n, Polinomio pol[], int coef, int exp) {
     int i = 0;
+    int pos = -1; 
 
     while (i < n) {
-        if (a[i].coeficiente == coef && a[i].exponente == exp) {
-            return i;  
+        if (pol[i].coeficiente == coef && pol[i].exponente == exp) {
+            pos = i;  
         }
         i++;
     }
-    return -1;  
+    
+    return pos;  
 }
 
 int main(){
 	int coef, exp; 
-	int result; 
+	int R; 
 	
 	Polinomio pol[4]={{3,5},{2,4},{1,3},{4,2}}; 
 	
-	int cantpol = 4; 
+	int n = 4; 
 	
-	mostrarPolinomio(cantpol, pol);	
+	mostrarPolinomio(n, pol);	
 	
 	cout<<"Digite un monomio para saber si existe en el arreglo: "<<endl; 
 	cout<<"Coeficiente: "; 
@@ -52,10 +54,10 @@ int main(){
 	cout<<"Exponente: "; 
 	cin>>exp; 
 	
-	result = busquedaSec(cantpol, pol, coef, exp); 
+	R = busquedaSecuencial(n, pol, coef, exp); 
 	
 	cout<<endl; 
-	if (result != -1) {
+	if (R >= 0) {
         cout << "El monomio " << coef << "x^" << exp << " existe en el polinomio." << endl;
     } 
 	else {
