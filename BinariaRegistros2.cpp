@@ -14,59 +14,61 @@ struct Personal {
     string nombres;
 };
 
-int compararFechas(Fecha f1, Fecha f2) {
-    if (f1.anho < f2.anho){
+int compararFechas(Fecha fa, Fecha fb) {
+    if (fa.anho < fb.anho){
     	return -1;
 	} 
-    else if (f1.anho > f2.anho){
+    else if (fa.anho > fb.anho){
     	return 1;
 	} 
-    else if (f1.mes < f2.mes){
+    else if (fa.mes < fb.mes){
     	return -1;
 	} 
-    else if (f1.mes > f2.mes){
+    else if (fa.mes > fb.mes){
     	return 1;
 	}
-    else if (f1.dia < f2.dia){
+    else if (fa.dia < fb.dia){
     	return -1;
 	} 
-    else if (f1.dia > f2.dia){
+    else if (fa.dia > fb.dia){
     	return 1;
 	}
     return 0;  
 }
 
-void ordenarPorFecha(Personal per[], Fecha fe[], int n) {
-    for (int i = 1; i < n; i++) {
-        Personal actualPersonal = per[i];
-        Fecha actualFecha = fe[i];
-        int j = i - 1;
-
-        while (j >= 0 && compararFechas(fe[j], actualFecha) > 0) {
-            fe[j + 1] = fe[j];
-            per[j + 1] = per[j];
-            j--;
+void ordenarPorFecha(Personal per[], Fecha fec[], int n) {
+    Personal aux2; 
+    Fecha aux3; 
+	
+	for (int i = 1; i < n; i++) {
+        aux2 = per[i];
+        aux3 = fec[i];
+        int k = i - 1;
+		
+        while (k >= 0 &&  compararFechas(fec[k], aux3) >0) {
+            fec[k + 1] = fec[k];
+            per[k + 1] = per[k];
+            k--;
         }
-
-        fe[j + 1] = actualFecha;
-        per[j + 1] = actualPersonal;
+        fec[k + 1] = aux3;
+        per[k + 1] = aux2;
     }
 }
 
-int busquedaBinaria(Fecha fe[], int n, Fecha clave) {
-    int izquierda = 0;
-    int derecha = n - 1;
+int busquedaBinaria(Fecha fec[], int n,  Fecha aux) {
+    int izq = 0;
+    int der = n - 1;
 
-    while (izquierda <= derecha) {
-        int medio = (izquierda + derecha) / 2;
-        int resultadoComparacion = compararFechas(fe[medio], clave);
+    while (izq <= der) {
+        int m = (izq + der) / 2;
+        int A = compararFechas(fec[m], aux);
 
-        if (resultadoComparacion == 0)
-            return medio; 
-        else if (resultadoComparacion < 0)
-            izquierda = medio + 1;
+        if (A == 0)
+            return m; 
+        else if (A < 0)
+            izq = m + 1;
         else
-            derecha = medio - 1;
+            der = m - 1;
     }
 
     return -1; 
@@ -85,42 +87,42 @@ int main() {
     cin >> n;
 
     Personal per[n];
-    Fecha fe[n];
+    Fecha fec[n];
 
     for (int i = 0; i < n; i++) {
         cout << "\nDatos del personal " << i + 1 << endl;
         cout << "DNI: ";
         cin >> per[i].dni;
-        cout << "Nombre: ";
         cin.ignore();
+        cout << "Nombre: ";
         getline(cin, per[i].nombres);
         cout << "Dia de nacimiento: ";
-        cin >> fe[i].dia;
+        cin >> fec[i].dia;
         cout << "Mes de nacimiento: ";
-        cin >> fe[i].mes;
+        cin >> fec[i].mes;
         cout << "Anho de nacimiento: ";
-        cin >> fe[i].anho;
+        cin >> fec[i].anho;
     }
 
-    ordenarPorFecha(per, fe, n);
+    ordenarPorFecha(per, fec, n);
 
     cout << "\nLista de personal ordenada por fecha de nacimiento:\n";
-    mostrarPersonal(n, per, fe);
+    mostrarPersonal(n, per, fec);
 
-    Fecha clave;
+    Fecha aux;
     cout << "\nIngrese la fecha de nacimiento a buscar:\n";
     cout << "Dia: ";
-    cin >> clave.dia;
+    cin >> aux.dia;
     cout << "Mes: ";
-    cin >> clave.mes;
+    cin >> aux.mes;
     cout << "Anho: ";
-    cin >> clave.anho;
+    cin >> aux.anho;
 
-    int resultado = busquedaBinaria(fe, n, clave);
+    int R = busquedaBinaria(fec, n, aux);
 
-    if (resultado != -1) {
+    if (R != -1) {
         cout << "\nEl personal con la fecha de nacimiento ingresada es:\n";
-        cout << "DNI: " << per[resultado].dni << ", Nombre: " << per[resultado].nombres << endl;
+        cout << "DNI: " << per[R].dni << ", Nombre: " << per[R].nombres << endl;
     } else {
         cout << "\nNo se encontro a ninguna persona con esa fecha de nacimiento.\n";
     }
